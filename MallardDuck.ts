@@ -7,6 +7,6 @@ export class MallardDuck extends Duck implements DuckInterface {
     quackBehaviour = new Quack()
 
     display() {
-        console.log('Here I am a mullard DUCK! Watch me!')
+        console.log(`Here I am a mullard DUCK ${this.name}! Watch me!`)
     }
 }

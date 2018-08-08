@@ -13,6 +13,8 @@ export interface DuckInterface {
 }
 
 export abstract class Duck implements DuckInterface {
+    constructor(public name: string) {}
+
     abstract flyBehaviour: FlyBehaviourInterface
     abstract quackBehaviour: QuackBehaviourInterface
     abstract display(): void

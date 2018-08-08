@@ -1,7 +1,7 @@
 import { MallardDuck } from './MallardDuck'
 import { FlyNoWay } from './models/FlyBehaviour'
 
-const mallard = new MallardDuck()
+const mallard = new MallardDuck('myName')
 
 console.log(mallard.swim())
 console.log(mallard.performFly())
