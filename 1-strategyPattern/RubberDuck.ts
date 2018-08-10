@@ -1,6 +1,6 @@
 import { Duck, DuckInterface } from './models/Duck'
 import { Squeack } from './models/QuackBehaviour'
-import { FlyNoWay } from '../duckFun/models/FlyBehaviour'
+import { FlyNoWay } from './models/FlyBehaviour'
 
 export class RubberDuck extends Duck implements DuckInterface {
     flyBehaviour = new FlyNoWay()
