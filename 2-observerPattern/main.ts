@@ -1,5 +1,5 @@
 import { WeatherData } from './models/subject/WeatherData'
-import { CurrentConditionsDisplay, ForecastDisplay, StatisticsDisplay } from './models/observer/Display'
+import { CurrentConditionsDisplay, ForecastDisplay } from './models/observer/Display'
 import { getRandomNumberBetween } from '../utilities'
 
 class WeatherStation {
@@ -9,7 +9,6 @@ class WeatherStation {
         this.weatherData = new WeatherData()
         new CurrentConditionsDisplay(this.weatherData)
         new ForecastDisplay(this.weatherData)
-        new StatisticsDisplay(this.weatherData)
     }
 
     collectData(): void {
