@@ -1,12 +1,13 @@
-import { MallardDuck } from './MallardDuck'
-import { FlyNoWay } from './models/FlyBehaviour'
+import { MallardDuck } from './models/duck/Duck'
+import { FlyNoWay } from './models/duckBehaviours/FlyBehaviour'
 
 const mallard = new MallardDuck('myName')
 
-console.log(mallard.swim())
-console.log(mallard.performFly())
-console.log(mallard.performQuack())
-console.log(mallard.display())
+mallard.swim()
+mallard.performFly()
+mallard.performQuack()
+mallard.display()
 
+// set behaviour at runtime
 mallard.setFlyBehaviour(new FlyNoWay())
 mallard.performFly()

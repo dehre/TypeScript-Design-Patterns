@@ -1,5 +1,6 @@
 import { WeatherData } from './models/subject/WeatherData'
 import { CurrentConditionsDisplay, ForecastDisplay, StatisticsDisplay } from './models/observer/Display'
+import { getRandomNumberBetween } from '../utilities'
 
 class WeatherStation {
     private weatherData: WeatherData
@@ -22,14 +23,10 @@ class WeatherStation {
 
     private setRandomMeasurements(): void {
         this.weatherData.setMeasurements(
-            this.getRandomNumberBetween(-20, 40),
-            this.getRandomNumberBetween(55, 92),
-            this.getRandomNumberBetween(10, 28)
+            getRandomNumberBetween(-20, 40),
+            getRandomNumberBetween(55, 92),
+            getRandomNumberBetween(10, 28)
         )
-    }
-
-    private getRandomNumberBetween(min: number, max: number): number {
-        return Math.floor(Math.random() * (max - min + 1) + min)
     }
 }
 

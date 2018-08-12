@@ -1,5 +1,5 @@
-import { FlyBehaviourInterface } from './FlyBehaviour'
-import { QuackBehaviourInterface } from './QuackBehaviour'
+import { FlyBehaviourInterface, FlyWithWings, FlyNoWay } from '../duckBehaviours/FlyBehaviour'
+import { QuackBehaviourInterface, Quack, Squeack } from '../duckBehaviours/QuackBehaviour'
 
 export interface DuckInterface {
     flyBehaviour: FlyBehaviourInterface
@@ -37,5 +37,25 @@ export abstract class Duck implements DuckInterface {
 
     setQuackBehaviour(qb: QuackBehaviourInterface): void {
         this.quackBehaviour = qb
+    }
+}
+
+// implementation
+export class MallardDuck extends Duck implements DuckInterface {
+    flyBehaviour = new FlyWithWings()
+    quackBehaviour = new Quack()
+
+    display() {
+        console.log(`Here I am a mullard DUCK ${this.name}! Watch me!`)
+    }
+}
+
+// implementation
+export class RubberDuck extends Duck implements DuckInterface {
+    flyBehaviour = new FlyNoWay()
+    quackBehaviour = new Squeack()
+
+    display() {
+        console.log(`Here I am ${this.name} Rubber DUCK`)
     }
 }

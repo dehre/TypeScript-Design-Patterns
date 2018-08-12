@@ -6,11 +6,11 @@ export interface ObserverInterface {
     update(temperature: number, humidity: number, pressure: number): void
 }
 
-// specific for this implementation
 export interface DisplayElementInterface {
     display(): void
 }
 
+// implementation
 export class CurrentConditionsDisplay implements ObserverInterface, DisplayElementInterface {
     id: string
     private temperature: number
@@ -35,6 +35,7 @@ export class CurrentConditionsDisplay implements ObserverInterface, DisplayEleme
     }
 }
 
+// implementation
 export class ForecastDisplay implements ObserverInterface, DisplayElementInterface {
     id: string
     private currentPressure = 29.92
@@ -63,6 +64,7 @@ export class ForecastDisplay implements ObserverInterface, DisplayElementInterfa
     }
 }
 
+// implementation
 export class StatisticsDisplay implements ObserverInterface, DisplayElementInterface {
     id: string
     private minTemp = 18

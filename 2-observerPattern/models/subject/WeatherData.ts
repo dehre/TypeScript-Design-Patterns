@@ -6,7 +6,6 @@ export interface SubjectInterface {
     notifyObservers(): void
 }
 
-// specific for this implementation
 export interface WeatherDataInterface {
     setMeasurements(temperature: number, humidity: number, pressure: number): void
 }
