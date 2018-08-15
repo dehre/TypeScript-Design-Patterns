@@ -1,14 +1,13 @@
 import { Beverage } from '../beverage/Beverage'
 
 export abstract class CondimentDecorator extends Beverage {
+    constructor(protected beverage: Beverage) {
+        super()
+    }
     abstract getDescription(): string
 }
 
 export class Mocha extends CondimentDecorator {
-    constructor(private beverage: Beverage) {
-        super()
-    }
-
     getDescription(): string {
         return this.beverage.getDescription() + ', Mocha'
     }
@@ -19,10 +18,6 @@ export class Mocha extends CondimentDecorator {
 }
 
 export class Whip extends CondimentDecorator {
-    constructor(private beverage: Beverage) {
-        super()
-    }
-
     getDescription(): string {
         return this.beverage.getDescription() + ', Whip'
     }
