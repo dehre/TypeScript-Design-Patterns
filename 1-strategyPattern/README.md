@@ -1,4 +1,4 @@
 ### Stategy Pattern
 
-Definition...
-It's the common case between composition vs inheritance
+The Strategy Pattern defines a family of algorithms, encapsulates each one, and makes them interchangeable.
+Strategy lets the algorithm vary indipendently from clients that use it

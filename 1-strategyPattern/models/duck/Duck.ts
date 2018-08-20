@@ -1,5 +1,5 @@
-import { FlyBehaviourInterface, FlyWithWings, FlyNoWay } from '../duckBehaviours/FlyBehaviour'
-import { QuackBehaviourInterface, Quack, Squeack } from '../duckBehaviours/QuackBehaviour'
+import { FlyBehaviourInterface, FlyWithWings, FlyNoWay } from '../behaviours/FlyBehaviour'
+import { QuackBehaviourInterface, Quack, Squeack } from '../behaviours/QuackBehaviour'
 
 export interface DuckInterface {
     flyBehaviour: FlyBehaviourInterface
