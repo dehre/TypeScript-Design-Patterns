@@ -1,4 +1,4 @@
-import { PizzaStore, NYPizzaStore, ChicagoPizzaStore } from './models/creators/PizzaStore'
+import { PizzaStore, NYPizzaStore, ChicagoPizzaStore } from './models/factories/factoryMethod/PizzaStore'
 
 export class PizzaTestDrive {
     start(): void {
