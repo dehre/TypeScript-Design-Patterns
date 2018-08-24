@@ -13,5 +13,4 @@ export class PizzaTestDrive {
     }
 }
 
-const ptd = new PizzaTestDrive()
-ptd.start()
+new PizzaTestDrive().start()
