@@ -1,4 +1,4 @@
-import { Command, NoCommand } from '../commands/Commands'
+import { Command, NoCommand } from '../commands'
 
 export class RemoteControl {
     onCommands: Command[] = []
@@ -6,6 +6,7 @@ export class RemoteControl {
     undoCommand: Command
 
     constructor() {
+        // avoid checking for empty values every time we execute a command
         for (let i = 0; i < 6; i++) {
             this.onCommands[i] = new NoCommand()
             this.offCommands[i] = new NoCommand()

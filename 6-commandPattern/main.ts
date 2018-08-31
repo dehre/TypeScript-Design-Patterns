@@ -1,6 +1,4 @@
-import { Light } from './models/appliances/Light'
-import { Stereo } from './models/appliances/Stereo'
-import { RemoteControl } from './models/invoker/RemoteControl'
+import { Light, Stereo, CeilingFan } from './models/appliances'
 import {
     LightOnCommand,
     LightOffCommand,
@@ -10,8 +8,8 @@ import {
     CeilingFanMediumCommand,
     CeilingFanOffCommand,
     CeilingFanLowCommand
-} from './models/commands/Commands'
-import { CeilingFan } from './models/appliances/CeilingFan'
+} from './models/commands'
+import { RemoteControl } from './models/invoker/RemoteControl'
 
 const remoteControl = new RemoteControl()
 
