@@ -6,7 +6,7 @@ export class RemoteControl {
     undoCommand: Command
 
     constructor() {
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 6; i++) {
             this.onCommands[i] = new NoCommand()
             this.offCommands[i] = new NoCommand()
         }
