@@ -25,3 +25,4 @@ console.log(remoteControl.toString())
 
 remoteControl.onButtonWasPressed(0)
 remoteControl.offButtonWasPressed(1)
+remoteControl.undoButtonWasPressed()

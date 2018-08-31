@@ -3,12 +3,14 @@ import { Command, NoCommand } from '../commands/Commands'
 export class RemoteControl {
     onCommands: Command[] = []
     offCommands: Command[] = []
+    undoCommand: Command
 
     constructor() {
         for (let i = 0; i < 4; i++) {
             this.onCommands[i] = new NoCommand()
             this.offCommands[i] = new NoCommand()
         }
+        this.undoCommand = new NoCommand()
     }
 
     setCommand(slot: number, onCommand: Command, offCommand: Command): void {
@@ -18,10 +20,16 @@ export class RemoteControl {
 
     onButtonWasPressed(slot: number): void {
         this.onCommands[slot].execute()
+        this.undoCommand = this.onCommands[slot]
     }
 
     offButtonWasPressed(slot: number): void {
         this.offCommands[slot].execute()
+        this.undoCommand = this.offCommands[slot]
+    }
+
+    undoButtonWasPressed(): void {
+        this.undoCommand.undo()
     }
 
     toString(): string {
