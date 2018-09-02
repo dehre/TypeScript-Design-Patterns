@@ -2,7 +2,7 @@ import { Command } from './Command'
 import { CeilingFan } from '../appliances/CeilingFan'
 
 // needs to store its state for the undo command
-abstract class CeilingFanCommand implements Command {
+export abstract class CeilingFanCommand implements Command {
     prevSpeed: number
     constructor(protected ceilingFan: CeilingFan) {}
 
