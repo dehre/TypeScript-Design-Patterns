@@ -1,52 +1,15 @@
-export class Amplifier {
-    on(): void {}
-}
+import { Amplifier, DvdPlayer, Projector, TheaterLight, TheaterScreen, PopcornPopper } from './models/components'
+import { HomeTheaterFacade } from './models/facade/HomeTheaterFacade'
 
-export class DvdPlayer {}
+const homeTheater = new HomeTheaterFacade({
+    amp: new Amplifier(),
+    dvd: new DvdPlayer(),
+    projector: new Projector(),
+    lights: new TheaterLight(),
+    screen: new TheaterScreen(),
+    popper: new PopcornPopper()
+})
 
-export class Projector {}
-
-export class TheaterLight {}
-
-export class Screen {}
-
-export class PopcornPopper {}
-
-export class HomeTheaterFacade {
-    constructor(
-        private amp: Amplifier,
-        private dvd: DvdPlayer,
-        private projector: Projector,
-        private lights: TheaterLight,
-        private screen: Screen,
-        private popper: PopcornPopper
-    ) {}
-
-    watchMovie(movie: string): void {
-        console.log('Get ready to watch a movie..')
-        this.popper.on()
-        this.popper.pop()
-        this.lights.dim(10)
-        this.screen.down()
-        this.projector.on()
-        this.projector.wideScreenMode()
-        this.amp.on()
-        this.amp.setDvd(this.dvd)
-        this.amp.setSurroundSound()
-        this.amp.setVolume(5)
-        this.dvd.on()
-        this.dvd.play(movie)
-    }
-
-    endMovie(): void {
-        console.log('Shuttin movie theather down..')
-        this.popper.off()
-        this.lights.on()
-        this.screen.up()
-        this.projector.off()
-        this.amp.off()
-        this.dvd.stop()
-        this.dvd.eject()
-        this.dvd.off()
-    }
-}
+homeTheater.watchMovie('Raiders of the Lost Ark')
+console.log(`\n\nI'm tired, let's go bed\n\n`)
+homeTheater.endMovie()
