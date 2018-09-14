@@ -5,7 +5,26 @@ export class UnsupportedOperationError extends Error {
     }
 }
 
-export abstract class MenuComponent {
+export interface Iterator {
+    hasNext(): boolean
+    next(): MenuComponent
+}
+
+export interface Iterable {
+    createIterator(): Iterator
+}
+
+export class NullIterator implements Iterator {
+    hasNext(): boolean {
+        return false
+    }
+
+    next(): MenuComponent {
+        return null
+    }
+}
+
+export abstract class MenuComponent implements Iterable {
     add(_menuComponent: MenuComponent): void {
         throw new UnsupportedOperationError()
     }
@@ -37,6 +56,10 @@ export abstract class MenuComponent {
     print(): void {
         throw new UnsupportedOperationError()
     }
+
+    createIterator(): Iterator {
+        throw new UnsupportedOperationError()
+    }
 }
 
 export class MenuItem extends MenuComponent {
@@ -65,10 +88,15 @@ export class MenuItem extends MenuComponent {
             `${this.getName()} ${this.isVegetarian() ? '(v)' : ''}, ${this.getDescription()} -- ${this.getPrice()}`,
         )
     }
+
+    createIterator(): Iterator {
+        return new NullIterator()
+    }
 }
 
 export class Menu extends MenuComponent {
     private menuComponents: MenuComponent[] = []
+    private iterator: Iterator
 
     constructor(private name: string, private description: string) {
         super()
@@ -103,6 +131,14 @@ export class Menu extends MenuComponent {
             menuComponent.print()
         })
     }
+
+    createIterator(): Iterator {
+        if (!this.iterator) {
+            this.iterator = new CompositeIterator(this.menuComponents)
+        }
+
+        return this.iterator
+    }
 }
 
 export class Waitress {
@@ -110,6 +146,47 @@ export class Waitress {
 
     printMenu(): void {
         this.allMenus.print()
+    }
+
+    printVegetarianMenu(): void {
+        const iterator = this.allMenus.createIterator()
+
+        console.log('--- VEGETARIAN MENU ---')
+        while (iterator.hasNext()) {
+            const menuComponent = iterator.next()
+            try {
+                if (menuComponent.isVegetarian()) menuComponent.print()
+            } catch (err) {}
+        }
+    }
+}
+
+export class CompositeIterator implements Iterator {
+    private stack: MenuComponent[] = []
+
+    constructor(components: MenuComponent[]) {
+        this.stack = components
+    }
+
+    hasNext(): boolean {
+        if (this.stack.length === 0) return false
+
+        const topElement = this.stack[this.stack.length - 1]
+        const topElemIterator = topElement.createIterator()
+        const topElementHasNext = topElemIterator.hasNext()
+        console.log()
+        if (!topElementHasNext) {
+            return true
+        } else {
+            this.stack.pop()
+            return this.hasNext()
+        }
+    }
+
+    next(): MenuComponent {
+        if (!this.hasNext()) return null
+
+        return this.stack.pop()
     }
 }
 
@@ -121,9 +198,9 @@ const cafeMenu = new Menu('CAFÉ MENU', 'Dinner')
 const dessertMenu = new Menu('DESSERT MENU', 'Dessert of course!')
 
 const allMenus = new Menu('ALL MENUS', 'All menus combined')
-allMenus.add(pancakeHouseMenu)
+// allMenus.add(pancakeHouseMenu)
 allMenus.add(dinerMenu)
-allMenus.add(cafeMenu)
+// allMenus.add(cafeMenu)
 
 dinerMenu.add(new MenuItem('Pasta', 'Spaghetti with Marinara Sauce, and a slice of sourdough bread', true, 3.89))
 dinerMenu.add(dessertMenu)
@@ -132,4 +209,4 @@ dessertMenu.add(new MenuItem('Apple Pie', 'Apple pie with a flakey crust, topped
 // other menu items here
 
 const waitress = new Waitress(allMenus)
-waitress.printMenu()
+waitress.printVegetarianMenu()
