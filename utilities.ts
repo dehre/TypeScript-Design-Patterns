@@ -7,7 +7,7 @@ export function getRandomNumberBetween(min: number, max: number): number {
 export function promptAsk(question: string): Promise<string> {
     var r = createInterface({
         input: process.stdin,
-        output: process.stdout
+        output: process.stdout,
     })
     return new Promise(res => {
         r.question(question + '\n', function(answer) {
@@ -15,4 +15,11 @@ export function promptAsk(question: string): Promise<string> {
             res(answer)
         })
     })
+}
+
+export class UnsupportedOperationError extends Error {
+    constructor() {
+        super()
+        this.message = 'the following operation is not supported'
+    }
 }
