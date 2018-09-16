@@ -127,9 +127,9 @@ export class Menu extends MenuComponent {
 
     print(): void {
         console.log(`\n------> ${this.getName()}, ${this.getDescription()}\n`)
-        this.menuComponents.forEach(menuComponent => {
-            menuComponent.print()
-        })
+        // this.menuComponents.forEach(menuComponent => {
+        //     menuComponent.print()
+        // })
     }
 
     createIterator(): Iterator {
@@ -184,9 +184,11 @@ export class CompositeIterator implements Iterator {
     }
 
     next(): MenuComponent {
-        if (!this.hasNext()) return null
+        if (this.hasNext()) {
+            return this.stack.pop()
+        }
 
-        return this.stack.pop()
+        return null
     }
 }
 
@@ -197,16 +199,17 @@ const dinerMenu = new Menu('DINER MENU', 'Lunch')
 const cafeMenu = new Menu('CAFÉ MENU', 'Dinner')
 const dessertMenu = new Menu('DESSERT MENU', 'Dessert of course!')
 
-const allMenus = new Menu('ALL MENUS', 'All menus combined')
 // allMenus.add(pancakeHouseMenu)
-allMenus.add(dinerMenu)
+// const allMenus = new Menu('ALL MENUS', 'All menus combined')
+dinerMenu.add(new MenuItem('Pasta', 'Spaghetti with Marinara Sauce, and a slice of sourdough bread', true, 3.89))
+dinerMenu.add(new MenuItem('Steak', 'Steak, with a lot of meat', false, 3.89))
+// allMenus.add(dinerMenu)
 // allMenus.add(cafeMenu)
 
-dinerMenu.add(new MenuItem('Pasta', 'Spaghetti with Marinara Sauce, and a slice of sourdough bread', true, 3.89))
-dinerMenu.add(dessertMenu)
-dessertMenu.add(new MenuItem('Apple Pie', 'Apple pie with a flakey crust, topped with vanilla icecream', true, 1.59))
+// dinerMenu.add(dessertMenu)
+// dessertMenu.add(new MenuItem('Apple Pie', 'Apple pie with a flakey crust, topped with vanilla icecream', true, 1.59))
 
 // other menu items here
 
-const waitress = new Waitress(allMenus)
+const waitress = new Waitress(dinerMenu)
 waitress.printVegetarianMenu()
