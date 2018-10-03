@@ -6,6 +6,18 @@ export interface SequencerInterface {
     setTempoInBPM(bpm: number): void
 }
 
+export class Sequencer implements SequencerInterface {
+    start(): void {
+        console.log('Sequencer > start()')
+    }
+    stop(): void {
+        console.log('Sequencer > stop()')
+    }
+    setTempoInBPM(bpm: number): void {
+        console.log(`Sequencer > setTempoInBPM(${bpm})`)
+    }
+}
+
 export interface BeatModelInterface {
     on(): void
     off(): void
@@ -27,13 +39,20 @@ export class BeatModel implements BeatModelInterface {
     constructor(private sequencer: SequencerInterface) {}
 
     on(): void {
+        console.log('MODEL > on()')
         this.sequencer.start()
         this.setBPM(90)
     }
 
     off(): void {
+        console.log('MODEL > off()')
         this.setBPM(0)
         this.sequencer.stop()
+    }
+
+    // called by some Audio class we should ideally extend from
+    beatEvent() {
+        this.notifyBeatObservers()
     }
 
     getBPM(): number {
@@ -41,40 +60,38 @@ export class BeatModel implements BeatModelInterface {
     }
 
     setBPM(bpm: number): void {
+        console.log(`MODEL > setBPM(${bpm})`)
         this.bpm = bpm
         this.sequencer.setTempoInBPM(this.bpm)
         this.notifyBPMObservers()
     }
 
-    // called by some Audio class we should extend from
-    beatEvent() {
-        this.notifyBeatObservers()
-    }
-
     // observer pattern from here
     registerBeatObserver(o: BeatObserverInterface): void {
         this.beatObservers.push(o)
-        console.log(`registerBeatObserver: added new observer ${o.id}\n`)
+        console.log(`MODEL > registerBeatObserver(${o.id})\n`)
     }
     removeBeatObserver(o: BeatObserverInterface): void {
         this.beatObservers = this.beatObservers.filter(obs => obs.id === o.id)
-        console.log(`removeBeatObserver: removed observer ${o.id}\n`)
+        console.log(`MODEL > removeBeatObserver(${o.id})\n`)
     }
     registerBPMObserver(o: BPMObserverInterface): void {
         this.BPMObservers.push(o)
-        console.log(`registerBPMObserver: added new observer ${o.id}\n`)
+        console.log(`MODEL > registerBPMObserver(${o.id})\n`)
     }
     removeBPMObserver(o: BPMObserverInterface): void {
         this.BPMObservers = this.BPMObservers.filter(obs => obs.id === o.id)
-        console.log(`removeBPMObserver: removed observer ${o.id}\n`)
-    }
-
-    notifyBPMObservers() {
-        this.BPMObservers.forEach(o => o.updateBPM())
+        console.log(`MODEL > registerBPMObserver(${o.id})\n`)
     }
 
     notifyBeatObservers() {
+        console.log('MODEL > notifyBeatObservers()')
         this.beatObservers.forEach(o => o.updateBeat())
+    }
+
+    notifyBPMObservers() {
+        console.log('MODEL > notifyBPMObservers()')
+        this.BPMObservers.forEach(o => o.updateBPM())
     }
 }
 
@@ -102,42 +119,50 @@ export class DJView implements BeatObserverInterface, BPMObserverInterface {
     }
 
     private createView(): void {
-        console.log('creating DJ View..')
-    }
-
-    enableStopButton() {
-        console.log('stop button enabled')
-    }
-
-    disableStopButton() {
-        console.log('stop button disabled')
+        console.log('VIEW > createView()')
     }
 
     enableStartButton() {
-        console.log('start button enabled')
+        console.log('VIEW > enableStartButton()')
     }
 
     disableStartButton() {
-        console.log('start button disabled')
+        console.log('VIEW > disableStartButton()')
+    }
+
+    enableStopButton() {
+        console.log('VIEW > enableStopButton()')
+    }
+
+    disableStopButton() {
+        console.log('VIEW > disableStopButton()')
     }
 
     // simulate call from user interacting with UI
     onClick(event: OnClickEvent): void {
-        if (event.source === 'setBPMButton') return this.controller.setBPM(event.bpm || 0)
-        if (event.source === 'increaseBPMButton') return this.controller.increaseBPM()
-        if (event.source === 'decreaseBPMButton') return this.controller.decreaseBPM()
+        if (event.source === 'setBPMButton') {
+            console.log('VIEW > setBPMButton clicked')
+            return this.controller.setBPM(event.bpm || 0)
+        }
+        if (event.source === 'increaseBPMButton') {
+            console.log('VIEW > increaseBPMButton clicked')
+            return this.controller.increaseBPM()
+        }
+        if (event.source === 'decreaseBPMButton') {
+            console.log('VIEW > decreaseBPMButton clicked')
+            return this.controller.decreaseBPM()
+        }
     }
 
     // observer pattern from here
     updateBPM(): void {
         const bpm = this.model.getBPM()
         if (bpm === 0) return console.log('offline')
-
-        console.log(`Current BPM: ${bpm}`)
+        console.log(`VIEW > updateBPM(${bpm})`)
     }
 
     updateBeat(): void {
-        console.log('Beat!')
+        console.log('VIEW > updateBeat()')
     }
 }
 
@@ -150,34 +175,50 @@ export interface ControllerInterface {
 }
 
 export class BeatController implements ControllerInterface {
-    view: DJView // TODO: view interface
+    view: DJView
     constructor(private model: BeatModelInterface) {
         this.view = new DJView(this.model, this)
     }
 
     start(): void {
+        console.log('CONTROLLER > start()')
         this.model.on()
         this.view.disableStartButton()
         this.view.enableStopButton()
     }
 
     stop(): void {
+        console.log('CONTROLLER > stop()')
         this.model.off()
         this.view.enableStartButton()
         this.view.disableStopButton()
     }
 
     increaseBPM(): void {
+        console.log('CONTROLLER > increaseBPM()')
         const bpm = this.model.getBPM()
         this.model.setBPM(bpm + 1)
     }
 
     decreaseBPM(): void {
+        console.log('CONTROLLER > decreaseBPM()')
         const bpm = this.model.getBPM()
         this.model.setBPM(bpm - 1)
     }
 
     setBPM(bpm: number): void {
+        console.log(`CONTROLLER > setBPM(${bpm})`)
         this.model.setBPM(bpm)
     }
 }
+
+const sequencer = new Sequencer()
+const model = new BeatModel(sequencer)
+const controller = new BeatController(model)
+
+console.log('\n\n---- START CONTROLLER ----')
+controller.start()
+
+// simulate UI interaction
+console.log('\n\n---- INCREASE BPM ----')
+controller.view.onClick({ source: 'increaseBPMButton' })
